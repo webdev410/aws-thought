@@ -26,23 +26,25 @@ router.get("/users", (req, res) => {
 });
 
 // Pass username from client to server
+// get thoughts from a user
 router.get("/users/:username", (req, res) => {
 	console.log(`Querying for thought(s) from ${req.params.username}.`);
 	const params = {
 		TableName: table,
-		KeyConditionExpression: "#un = :user", // Specifies search criteria
+		KeyConditionExpression: "#un = :user",
 		ExpressionAttributeNames: {
-			"#un": "username", // the # prefix establishes that this is an attribute name alias
+			"#un": "username",
 			"#ca": "createdAt",
 			"#th": "thought",
-			"#img": "image",
+			"#img": "image", // add the image attribute alias
 		},
 		ExpressionAttributeValues: {
-			":user": req.params.username, // The : establishes that this is an attribute value alias
+			":user": req.params.username,
 		},
-		ProjectionExpression: "#un, #th, #ca, #img", // Determines which Attribus (columns) will be returned
-		ScanIndexForward: false, // Specifies order of sort key. Default is true, which would be ascending
+		ProjectionExpression: "#un, #th, #ca, #img", // add the image to the database response
+		ScanIndexForward: false, // false makes the order descending(true is default)
 	};
+	// database call ..
 	// Retrieve single user's thoughts from database
 	dynamodb.query(params, (err, data) => {
 		if (err) {
