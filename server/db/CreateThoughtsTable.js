@@ -1,5 +1,4 @@
 // ! Command to run this file and create the table: node ./server/db/CreateThoughtsTable.js
-
 const AWS = require("aws-sdk");
 
 // Modify AWS config object that Dynamo will use to connect to the local instance
